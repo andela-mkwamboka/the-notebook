@@ -1,0 +1,24 @@
+{
+  "name": "the-notebook",
+  "version": "1.0.0",
+  "description": "This is a minimalistic notetaking app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela-mkwamboka/the-notebook.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andela-mkwamboka/the-notebook/issues"
+  },
+  "homepage": "https://github.com/andela-mkwamboka/the-notebook#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
