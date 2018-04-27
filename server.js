@@ -1,10 +1,33 @@
-var express = require('express'),
-  app = express();
+const express = require('express'),
+  app = express(),
+  bodyParser = require('body-parser'),
+  mongoose = require('mongoose');
 
-app.get('/', function(request, response) {
-  response.send('hello world');
+require('dotenv').config();
+
+// check enviroment
+const DB_URL = (app.settings.env === 'testing') ? process.env.DB_URL_TEST : process.env.DB_URL;
+
+// database connection
+mongoose.connect(DB_URL, (error) => {
+  if (error) {
+    console.log('ERROR:', error);
+  } else {
+    console.log('Connnection successful');
+  }
 });
 
-app.listen(3000, function() {
-  console.log('Application running on port 3000');
+// app configuration
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Routes
+const routes = require('./server/routes/index');
+app.use('/api', routes);
+
+app.get('/', (request, response) => {
+  response.send('Hello world');
+});
+app.listen(process.env.PORT, () => {
+  console.log('Application running on port ' + process.env.PORT);
 });
