@@ -2,7 +2,8 @@ const express = require('express'),
   app = express(),
   bodyParser = require('body-parser'),
   mongoose = require('mongoose'),
-  cors = require('cors');
+  cors = require('cors'),
+  path = require('path');
 
 require('dotenv').config();
 
@@ -22,14 +23,13 @@ mongoose.connect(DB_URL, (error) => {
 app.use(cors()); // prevent app from making other calls
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname + '/client')));
+
 
 // Routes
 const routes = require('./server/routes/index');
 app.use('/api', routes);
 
-app.get('/', (request, response) => {
-  response.send('Hello world');
-});
 app.listen(process.env.PORT, () => {
   console.log('Application running on port ' + process.env.PORT);
 });

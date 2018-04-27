@@ -1,0 +1,16 @@
+body {
+  margin-top: 20px
+}
+
+.navbar-header {
+  width: 50%;
+}
+
+.navbar-nav {
+  display: contents;
+}
+
+.nav-item {
+  margin: 0px 10px;
+  padding: 0px 10px;
+}
