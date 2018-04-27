@@ -1,1 +1,1 @@
-# the-notebook
+This is a minimalistic notetaking app
