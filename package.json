@@ -4,7 +4,7 @@
   "description": "This is a minimalistic notetaking app",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "ENV=test mocha test/server",
     "start": "nodemon server.js"
   },
   "repository": {
@@ -20,9 +20,12 @@
   "homepage": "https://github.com/andela-mkwamboka/the-notebook#readme",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
+    "mocha": "^5.1.1",
     "mongoose": "^5.0.16"
   },
   "devDependencies": {

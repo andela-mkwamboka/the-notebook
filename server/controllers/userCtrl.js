@@ -9,11 +9,10 @@ module.exports = {
     user.username = request.body.username;
     user.email = request.body.email;
     user.password = request.body.password;
-
     user.save((error, user) => {
       if (error) {
         if (error.code === 11000) {
-          response.status(400).json({
+          response.status(404).json({
             message: 'Duplicate Entry'
           });
         } else {
@@ -21,9 +20,16 @@ module.exports = {
             error: error
           });
         }
-      } else {
-        response.json(user);
       }
+      // Create token
+      const token = jwt.sign(user.toJSON(), process.env.SUPERSECRET, {
+        expiresIn: 60 * 60 * 24, // 24 hours
+      });
+      response.status(200).json({
+        message: 'User created',
+        token: token,
+        user: user
+      });
     });
   },
 
