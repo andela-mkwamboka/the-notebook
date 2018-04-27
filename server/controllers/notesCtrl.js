@@ -10,11 +10,11 @@ module.exports = {
 
     notes.save((error, notes) => {
       if (error) {
-        response.status(500).send({
+        response.status(500).json({
           error: error
         });
       } else {
-        response.status(200).send({
+        response.status(200).json({
           message: notes
         });
       }
@@ -25,11 +25,11 @@ module.exports = {
   getAll: (request, response) => {
     Notes.find((error, notes) => {
       if (error) {
-        return response.status(409).send({
+        return response.status(409).json({
           error: error
         });
       } else {
-        response.status(200).send({
+        response.status(200).json({
           message: notes
         });
       }
@@ -41,11 +41,11 @@ module.exports = {
       _id: request.params.note_id
     }, (error, note) => {
       if (error) {
-        return response.status(409).send({
+        return response.status(409).json({
           error: error
         });
       } else {
-        response.status(200).send({
+        response.status(200).json({
           note: note
         });
       }
@@ -60,13 +60,13 @@ module.exports = {
       if (request.body.title) note.title = request.body.title;
       if (request.body.content) note.content = request.body.content;
       if (error) {
-        return response.status(400).send({
+        return response.status(400).json({
           error: error
         });
       } else {
         // save the new user details
         note.save((error, note) => {
-          response.status(200).send({
+          response.status(200).json({
             message: 'user details updated',
             note: note
           });
@@ -80,11 +80,11 @@ module.exports = {
       _id: request.params.note_id
     }, (error) => {
       if (error) {
-        return response.status(409).send({
+        return response.status(409).json({
           message: 'Unable to delete account'
         });
       } else {
-        response.status(202).send({
+        response.status(202).json({
           message: 'Deleted succesfully',
         });
       }
