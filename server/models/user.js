@@ -18,7 +18,8 @@ var UserSchema = new Schema({
     type: String,
     required: true,
     select: false,
-  }
+  },
+  notes: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
 
 // Hash the password
