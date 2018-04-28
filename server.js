@@ -23,7 +23,9 @@ mongoose.connect(DB_URL, (error) => {
 app.use(cors()); // prevent app from making other calls
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname + '/client')));
+
+app.use('/scripts', express.static(__dirname, '/node_modules'));
+app.use(express.static(path.join(__dirname, 'client')));
 
 
 // Routes
