@@ -24,32 +24,21 @@ module.exports = {
       } else {
         response.json(user);
       }
+
     });
   },
 
   login: (request, response) => {
     User.findOne({
       username: request.body.username
-    }).select('username password').exec((error, user) => {
+    }, (error, user) => {
       if (user) {
-        const validPassword = user.comparePassword(request.body.password);
-        if (!validPassword) {
-          response.status(404).json({ message: 'Authentication failed. Wrong password.' });
-        } else {
-          // create token
-          const token = jwt.sign({
-            name: user.username,
-          }, process.env.SUPERSECRET, {
-            expiresIn: 60 * 60 * 24, // 24 hours
-          });
-          response.status(200).json({
-            message: 'Login successful',
-            user: user,
-            token: token
-          });
-        }
+        response.status(200).send({
+          message: 'Login successful',
+          user: user
+        });
       } else {
-        response.status(401).json({
+        response.status(401).send({
           error: error
         });
       }
@@ -65,13 +54,13 @@ module.exports = {
       if (request.body.email) user.email = request.body.email;
       if (request.body.password) user.password = request.body.password;
       if (error) {
-        return response.status(400).json({
+        return response.status(400).send({
           error: error
         });
       } else {
         // save the new user details
         user.save((error, user) => {
-          response.status(200).json({
+          response.status(200).send({
             message: 'user details updated',
             user: user
           });
@@ -85,11 +74,11 @@ module.exports = {
       _id: request.params.user_id
     }, (error) => {
       if (error) {
-        return response.status(409).json({
+        return response.status(409).send({
           message: error
         });
       } else {
-        response.status(202).json({
+        response.status(202).send({
           message: 'Sad to see you leave'
         });
       }
