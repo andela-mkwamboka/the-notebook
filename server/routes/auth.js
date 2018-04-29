@@ -25,9 +25,8 @@ module.exports = {
     }
   },
   // middleware that modify the response body
-  doesModifyBody: function(request, response) {
-    response.setHeader("Content-Type", "text/html");
-    response.write("<p>Hello World</p>");
+  modifyBody: (request, response) => {
+    response.setHeader('Content-Type', 'text/html');
     response.end();
   }
 
