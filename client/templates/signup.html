@@ -1,0 +1,18 @@
+<div class="jumbotron">
+  <div class="alert alert-danger" role="alert" ng-show="alert">
+    {{ alert}}
+  </div>
+  <h2>Signup</h2>
+  <div>
+    <form name="signupForm" class="form-group" novalidate>
+      <label>Username</label><i class="warning">*</i>
+      <input type="text" name="username" ng-model="username" required /> <br><br>
+      <label>Email</label><i class="warning">*</i>
+      <input type="email" name="email" ng-model="email" required /> <br><br>
+      <label>Password</label><i class="warning">*</i>
+      <input type="password" name="password" ng-model="password" required /> <br><br>
+      <div ng-if="vm.error" class="alert alert-danger">{{$scope.error}}</div>
+      <button ng-disabled="form.$invalid" class="btn btn-lg" ng-click="signup()" ng-class="{'btn-primary': !signupForm.$invalid, 'btn-secondary': signupForm.$invalid}">signup</button>
+    </form>
+  </div>
+</div>

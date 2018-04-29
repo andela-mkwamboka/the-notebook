@@ -1,0 +1,13 @@
+<div class="jumbotron">
+  <h2>Login</h2>
+  <div>
+    <form name="loginForm" class="form-group" novalidate>
+      <label>Username</label><i class="warning">*</i>
+      <input type="text" name="username" ng-model="username" required /> <br><br>
+      <label>Password</label><i class="warning">*</i>
+      <input type="password" name="password" ng-model="password" required /> <br><br>
+      <div ng-if="vm.error" class="alert alert-danger">{{$scope.error}}</div>
+      <button ng-disabled="form.$invalid" class="btn btn-lg" ng-click="login()" ng-class="{'btn-primary': !loginForm.$invalid, 'btn-secondary': loginForm.$invalid}">Login</button>
+    </form>
+  </div>
+</div>
