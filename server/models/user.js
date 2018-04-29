@@ -1,4 +1,5 @@
 const mongoose = require('mongoose'),
+  notesSchema = require('./notes'),
   Schema = mongoose.Schema,
   bcrypt = require('bcrypt-nodejs');
 
@@ -18,7 +19,8 @@ var UserSchema = new Schema({
     type: String,
     required: true,
     select: false,
-  }
+  },
+  notes: [notesSchema]
 });
 
 // Hash the password

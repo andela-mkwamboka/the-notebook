@@ -3,11 +3,12 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const notesSchema = new Schema({
-  ownerId: String,
+  user_id: { type: Schema.Types.ObjectId, ref: 'Users' },
   title: {
     type: String,
     required: true,
   },
+
   content: {
     type: String,
     required: true,
@@ -16,4 +17,4 @@ const notesSchema = new Schema({
   timestamps: true,
 });
 
-module.exports = mongoose.model('Notes', notesSchema);
+module.exports = notesSchema;

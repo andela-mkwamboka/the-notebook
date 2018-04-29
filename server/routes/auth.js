@@ -23,5 +23,12 @@ module.exports = {
         message: 'No token found',
       });
     }
+  },
+  // middleware that modify the response body
+  doesModifyBody: function(request, response) {
+    response.setHeader("Content-Type", "text/html");
+    response.write("<p>Hello World</p>");
+    response.end();
   }
+
 };

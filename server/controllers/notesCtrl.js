@@ -1,93 +1,114 @@
-const Notes = require('../models/notes.js');
+const Notes = require('../models/user.js');
 
 module.exports = {
   create: (request, response) => {
-    const notes = new Notes();
-
-    notes.ownerId = request.body.ownerId;
-    notes.title = request.body.title;
-    notes.content = request.body.content;
-
-    notes.save((error, notes) => {
-      if (error) {
-        response.status(500).json({
-          error: error
-        });
-      } else {
+    console.log(request.params.user_id);
+    Notes
+      .findById({
+        _id: request.params.user_id
+      })
+      .select('notes')
+      .exec((error, user) => {
+        if (user) {
+          const newNote = user.notes.create({
+            user_id: request.params.user_id,
+            title: request.body.title,
+            content: request.body.content,
+          });
+          if (newNote) {
+            response.status(202).json({
+              message: newNote
+            });
+          }
+        } else if (error) {
+          response.status(500).json({
+            error: error
+          });
+        }
+      });
+  },
+  // get user specific notes
+  getNote: (request, response) => {
+    Notes
+      .findById({ _id: request.params.user_id })
+      .select('notes')
+      .exec((error, note) => {
+        if (!note) {
+          response.status(404).json({
+            message: 'User has no notes'
+          });
+        } else if (error) {
+          response.status(400).json({
+            message: error
+          });
+        }
         response.status(200).json({
-          message: notes
+          message: note
         });
-      }
-    });
-
+      });
   },
 
   getAll: (request, response) => {
-    Notes.find((error, notes) => {
-      if (error) {
-        return response.status(409).json({
-          error: error
-        });
-      } else {
-        response.status(200).json({
-          message: notes
-        });
-      }
-    });
-  },
-
-  getNote: (request, response) => {
-    Notes.findById({
-      _id: request.params.note_id
-    }, (error, note) => {
-      if (error) {
-        return response.status(409).json({
-          error: error
-        });
-      } else {
-        response.status(200).json({
-          note: note
-        });
-      }
-    });
+    Notes
+      .findById({ _id: request.params.user_id })
+      .select('notes.title notes.content')
+      .exec((error, notes) => {
+        if (error) {
+          return response.status(409).json({
+            error: error
+          });
+        } else {
+          response.status(200).json({
+            notes: notes.notes
+          });
+        }
+      });
   },
 
   update: (request, response) => {
-    Notes.findById({
-      _id: request.params.note_id
-    }, (error, note) => {
-      // update note
-      if (request.body.title) note.title = request.body.title;
-      if (request.body.content) note.content = request.body.content;
-      if (error) {
-        return response.status(400).json({
-          error: error
+    Notes
+      .findOne({
+        _id: request.params.user_id
+      }).exec((err, usernotes) => {
+        let notesArray = usernotes.notes.map((note) => {
+          if (note._id == request.params.note_id) {
+            if (request.body.title) note.title = request.body.title;
+            if (request.body.content) note.content = request.body.content;
+          }
+          return note;
         });
-      } else {
-        // save the new user details
-        note.save((error, note) => {
+
+        usernotes.notes = notesArray;
+        usernotes.save((error, userNotes) => {
+          if (error) {
+            response.status(404).json({
+              error: error
+            });
+          }
           response.status(200).json({
-            message: 'user details updated',
-            note: note
+            notes: userNotes.notes
           });
         });
-      }
-    });
+      });
   },
 
+
   delete: (request, response) => {
-    Notes.remove({
-      _id: request.params.note_id
-    }, (error) => {
-      if (error) {
-        return response.status(409).json({
-          message: 'Unable to delete account'
+    Notes
+      .findById({ user_id: request.params.user_id })
+      .exec((err, user) => {
+        user.notes.id(request.params.notes_id).remove();
+        user.save((error) => {
+          if (error) {
+            response.status(202).json({
+              message: 404,
+            });
+          } else {
+            response.json({
+              message: 'Removed',
+            });
+          }
         });
-      } else {
-        response.status(202).json({
-          message: 'Deleted succesfully',
-        });
-      }
-    });
+      });
   }
 };

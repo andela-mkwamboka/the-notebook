@@ -22,7 +22,20 @@ module.exports = {
           });
         }
       } else {
-        response.json(user);
+        const token = jwt.sign({
+          username: user.username,
+        }, process.env.SUPERSECRET, {
+          expiresIn: 60 * 60 * 24, // 24 hours
+        });
+        response.status(200).json({
+          message: 'User Created',
+          user: {
+            username: user.username,
+            email: user.email,
+            _id: user._is
+          },
+          token: token
+        });
       }
     });
   },
