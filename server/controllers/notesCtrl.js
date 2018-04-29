@@ -1,36 +1,27 @@
-const Notes = require('../models/user.js'),
-  mongoose = require('mongoose');
-// const notes = require('../models/notes.js');
+const Notes = require('../models/user.js');
 
 module.exports = {
   create: (request, response) => {
-    // console.log(mongoose.Types.ObjectId(request.query.userId));
-    // const userId = request.query.userId;
+    console.log(request.params.user_id);
     Notes
       .findById({
-        _id: request.query.userId
+        _id: request.params.user_id
       })
-      .select('notes').exec((error, user) => {
-        console.log('----', user.notes);
+      .select('notes')
+      .exec((error, user) => {
         if (user) {
-          user.notes.push({
-            user_id: mongoose.Types.ObjectId(user._id),
+          const newNote = user.notes.create({
+            user_id: request.params.user_id,
             title: request.body.title,
             content: request.body.content,
           });
-          user.save((error, users) => {
-            if (error) {
-              response.status(500).send({
-                error: error
-              });
-            } else {
-              response.status(201).send({
-                thisDoc: users.docs[users.docs.length - 1]
-              });
-            }
-          });
+          if (newNote) {
+            response.status(202).json({
+              message: newNote
+            });
+          }
         } else if (error) {
-          response.status(500).send({
+          response.status(500).json({
             error: error
           });
         }
@@ -39,44 +30,46 @@ module.exports = {
   // get user specific notes
   getNote: (request, response) => {
     Notes
-      .findById(request.query.userId)
-      .select('notes.title notes.content'), (error, notes) => {
-        if (!notes) {
-          response.status(404).send({
+      .findById({ _id: request.params.user_id })
+      .select('notes')
+      .exec((error, note) => {
+        if (!note) {
+          response.status(404).json({
             message: 'User has no notes'
           });
         } else if (error) {
-          response.status(400).send({
+          response.status(400).json({
             message: error
           });
         }
-        response.status(200).send({
-          message: notes
+        response.status(200).json({
+          message: note
         });
-      };
+      });
   },
 
   getAll: (request, response) => {
     Notes
-      .findById(request.query.userId)
-      .select('notes'), (error, notes) => {
+      .findById({ _id: request.params.user_id })
+      .select('notes.title notes.content')
+      .exec((error, notes) => {
         if (error) {
-          return response.status(409).send({
+          return response.status(409).json({
             error: error
           });
         } else {
-          response.status(200).send({
-            note: notes
+          response.status(200).json({
+            notes: notes.notes
           });
         }
-      };
+      });
   },
 
   update: (request, response) => {
     Notes
       .findOne({
-        _id: request.query.userId
-      }), (err, usernotes) => {
+        _id: request.params.user_id
+      }).exec((err, usernotes) => {
         let notesArray = usernotes.notes.map((note) => {
           if (note._id == request.params.note_id) {
             if (request.body.title) note.title = request.body.title;
@@ -88,31 +81,34 @@ module.exports = {
         usernotes.notes = notesArray;
         usernotes.save((error, userNotes) => {
           if (error) {
-            response.status(404).send({
+            response.status(404).json({
               error: error
             });
           }
-          response.status(200).send({
+          response.status(200).json({
             notes: userNotes.notes
           });
         });
-      };
+      });
   },
 
 
   delete: (request, response) => {
-    Notes.findById(request.query.userId), (err, user) => {
-      user.save((error) => {
-        if (error) {
-          response.status(202).json({
-            message: 404,
-          });
-        } else {
-          response.json({
-            message: 'Removed',
-          });
-        }
+    Notes
+      .findById({ user_id: request.params.user_id })
+      .exec((err, user) => {
+        user.notes.id(request.params.notes_id).remove();
+        user.save((error) => {
+          if (error) {
+            response.status(202).json({
+              message: 404,
+            });
+          } else {
+            response.json({
+              message: 'Removed',
+            });
+          }
+        });
       });
-    };
   }
 };

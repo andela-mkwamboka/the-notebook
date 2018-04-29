@@ -22,23 +22,47 @@ module.exports = {
           });
         }
       } else {
-        response.json(user);
+        const token = jwt.sign({
+          username: user.username,
+        }, process.env.SUPERSECRET, {
+          expiresIn: 60 * 60 * 24, // 24 hours
+        });
+        response.status(200).json({
+          message: 'User Created',
+          user: {
+            username: user.username,
+            email: user.email,
+            _id: user._is
+          },
+          token: token
+        });
       }
-
     });
   },
 
   login: (request, response) => {
     User.findOne({
       username: request.body.username
-    }, (error, user) => {
+    }).select('username password').exec((error, user) => {
       if (user) {
-        response.status(200).send({
-          message: 'Login successful',
-          user: user
-        });
+        const validPassword = user.comparePassword(request.body.password);
+        if (!validPassword) {
+          response.status(404).json({ message: 'Authentication failed. Wrong password.' });
+        } else {
+          // create token
+          const token = jwt.sign({
+            name: user.username,
+          }, process.env.SUPERSECRET, {
+            expiresIn: 60 * 60 * 24, // 24 hours
+          });
+          response.status(200).json({
+            message: 'Login successful',
+            user: user,
+            token: token
+          });
+        }
       } else {
-        response.status(401).send({
+        response.status(401).json({
           error: error
         });
       }
@@ -54,13 +78,13 @@ module.exports = {
       if (request.body.email) user.email = request.body.email;
       if (request.body.password) user.password = request.body.password;
       if (error) {
-        return response.status(400).send({
+        return response.status(400).json({
           error: error
         });
       } else {
         // save the new user details
         user.save((error, user) => {
-          response.status(200).send({
+          response.status(200).json({
             message: 'user details updated',
             user: user
           });
@@ -74,11 +98,11 @@ module.exports = {
       _id: request.params.user_id
     }, (error) => {
       if (error) {
-        return response.status(409).send({
+        return response.status(409).json({
           message: error
         });
       } else {
-        response.status(202).send({
+        response.status(202).json({
           message: 'Sad to see you leave'
         });
       }

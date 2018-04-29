@@ -5,9 +5,9 @@ const router = require('express').Router(),
 
 
 // USER ENDPOINTS
-router.route('/users/:user_id')
-  .put(users.update)
-  .delete(users.delete);
+router.route('/users')
+  .post(users.create);
+
 
 router.route('/users/login')
   .post(users.login);
@@ -16,16 +16,20 @@ router.route('/users/login')
 router.use(auth.authenticate);
 // routes below need user auth for accessibility
 
+router.route('/users/:user_id')
+  .put(users.update)
+  .delete(users.delete);
+
 // NOTES ENDPOINTS
 // get all notes that belongs to the user
 router.route('/users/:user_id/notes')
   .get(notes.getAll);
 
 
-router.route('/notes')
+router.route('/notes/:user_id?')
   .post(notes.create);
 
-router.route('/notes/:note_id')
+router.route('/notes/:note_id?')
   .get(notes.getNote)
   .put(notes.update)
   .delete(notes.delete);
