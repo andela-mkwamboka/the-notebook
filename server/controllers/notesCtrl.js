@@ -16,7 +16,6 @@ module.exports = {
             content: request.body.content,
           });
           const note = user.notes[0];
-
           user.save((err, note) => {
             if (error) {
               response.status(404).send({

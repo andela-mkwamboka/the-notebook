@@ -6,8 +6,12 @@ body {
 
 .jumbotron {
   background: none;
-  border: 2px solid;
   margin-top: 50px;
+}
+
+.note-card {
+  float: left;
+  margin: 10px;
 }
 
 nav {
@@ -64,4 +68,12 @@ input {
 .card {
   background: none;
   border: 1px solid grey;
+}
+
+label {
+  width: 100%
+}
+
+warning {
+  color: red;
 }

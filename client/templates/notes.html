@@ -8,9 +8,7 @@
 
   <!-- Display Notes -->
   <div ng-hide="reading">
-    <div class="container notes-display" ng-show="notes.length">
-      <button ng-click="toggleCreate()"><i class="fas fa-plus"></i> Add Note</button>
-    </div>
+    <button ng-click="addNote()" ng-show="notes.length"><i class="fas fa-plus"></i> Add Note</button> <br> <br>
     <div class="note-card" ng-repeat="note in notes">
       <div class="card" style="width: 18rem;">
         <div class="card-body">
@@ -23,25 +21,27 @@
             <small>Created at {{ note.time }}</small>
           </div>
         </div>
-      </div>
+      </div> <br> <br>
     </div>
   </div>
 
-  <div ng-show="!notes.length" ng-hide="reading">
+  <div ng-show="!notes.length || createNote" ng-hide="reading">
     <!-- Create Notes Form -->
-    <form ng-show="createNote" name="createForm" class="form-group" novalidate>
+    <form name="createForm" class="form-group" novalidate>
       <div ng-show="notePreview">
         <h3>{{ note.title | uppercase }}</h3>
         <hr>
         <p class="lead" marked="note.content"> {{ note.content}}</p>
         <br> <br>
       </div>
-      <label>Title</label><i class="warning">*</i>
-      <input ng-model="note.title" name="title" ng-change="preview()" required> <br><br>
-      <label>Content:</label> <i class="warning">*</i><small> #header, ****bold****, *italics* / _italics_, ~~strike~~  ,- list</small>
-      <textarea ng-model="note.content" name="content" ng-change="preview()" required></textarea> <br><br>
-      <button ng-disabled="createForm.$invalid" ng-class="{'btn-primary': !createForm.$invalid, 'btn-secondary': createForm.$invalid}" ng-click="create(note)">Create</button>
-      <button class="btn btn-primary" ng-click="toggleCreate()">Cancel</button>
+      <div>
+        <label>Title <i class="warning">*</i></label>
+        <input ng-model="note.title" name="title" ng-change="preview()" required> <br><br>
+        <label>Content:<i class="warning">*</i></label> <small> #header, ****bold****, *italics* / _italics_, ~~strike~~  ,- list</small>
+        <textarea ng-model="note.content" name="content" ng-change="preview()" required></textarea> <br><br>
+        <button ng-disabled="createForm.$invalid" ng-class="{'btn-primary': !createForm.$invalid, 'btn-secondary': createForm.$invalid}" ng-click="create(note)">Create</button>
+        <button class="btn btn-primary" ng-click="toggleCreate()">Cancel</button>
+      </div>
     </form>
   </div>
 

@@ -1,10 +1,9 @@
 (function() {
   angular.module('noteApp')
-    .controller('notesController', function($scope, $location, notesFactory, $location) {
+    .controller('notesController', function($scope, $location, notesFactory, $location, $state) {
 
       // get all notes
       notesFactory.getNotes().$promise.then(function(notes) {
-        console.log(notes)
         if (notes) {
           // set relative time using moment js
           notes.message.forEach(note => {
@@ -17,6 +16,7 @@
       // create notes
       $scope.create = (note) => {
         $scope.toggleCreate();
+        $state.reload();
         return notesFactory.create(note.title, note.content);
       }
 
@@ -54,6 +54,11 @@
         notesFactory.delete(noteId);
         $location.path('/notes');
       }
+
+      $scope.addNote = () => {
+        $scope.createNote = true;
+      }
+
 
     })
 }());

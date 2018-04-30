@@ -3,10 +3,9 @@
     "browser": true,
     "commonjs": true,
     "es6": true,
-    "node": true,
-    "angular": true
+    "node": true
   },
-  "extends": ["angular", "eslint:recommended"],
+  "extends": "eslint:recommended",
   "parserOptions": {
     "sourceType": "module"
   },
