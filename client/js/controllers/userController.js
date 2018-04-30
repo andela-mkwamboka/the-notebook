@@ -1,15 +1,17 @@
 (function() {
   angular.module('noteApp')
-    .controller('userController', function($scope, $location, userFactory) {
-      $scope.signup = (user) => {
+    .controller('userController', function($scope, $location, $window, userFactory, $reload) {
+      $scope.signup = () => {
         userFactory.signup($scope.username, $scope.email, $scope.password);
+        $route.reload();
         $location.path('/notes')
       };
-      $scope.login = (user) => {
-        userFactory.login(user);
+      $scope.login = () => {
+        userFactory.login($scope.username, $scope.password);
         $location.path('/notes')
       };
       $scope.logout = () => {
+        $window.localStorage.removeItem('user_id');
         $location.path('/')
       };
     });

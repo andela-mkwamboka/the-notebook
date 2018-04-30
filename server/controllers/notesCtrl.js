@@ -50,7 +50,7 @@ module.exports = {
           });
         } else if (error) {
           response.status(400).send({
-            message: error
+            error: error
           });
         }
         response.status(200).send({
@@ -62,7 +62,7 @@ module.exports = {
   getAll: (request, response) => {
     Notes
       .findById({ _id: request.params.user_id })
-      .select('notes.title notes.content')
+      .select('notes.title notes.content notes._id')
       .exec((error, notes) => {
         if (error) {
           return response.status(409).send({
@@ -81,12 +81,15 @@ module.exports = {
   },
 
   update: (request, response) => {
+    console.log(request.params.user_id)
+    console.log(request.body.note_id);
     Notes
-      .findOne({
+      .findById({
         _id: request.params.user_id
       }).exec((err, usernotes) => {
         let notesArray = usernotes.notes.map((note) => {
-          if (note._id == request.params.note_id) {
+          console.log(usernotes)
+          if (note._id == request.body.note_id) {
             if (request.body.title) note.title = request.body.title;
             if (request.body.content) note.content = request.body.content;
           }

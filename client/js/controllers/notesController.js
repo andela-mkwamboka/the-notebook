@@ -16,7 +16,6 @@
       // create notes
       $scope.create = (note) => {
         $scope.toggleCreate();
-        $location.path('/notes');
         return notesFactory.create(note.title, note.content);
       }
 
@@ -27,6 +26,28 @@
       $scope.preview = () => {
         $scope.notePreview = true;
       };
+
+      $scope.addNote = () => {
+        $scope.createNote = true;
+      }
+
+      $scope.readMore = (note) => {
+        $scope.reading = true;
+        $scope.read = {
+          title: note.title,
+          content: note.content,
+          _id: note._id
+        }
+      }
+
+      $scope.toggleEdit = () => {
+        $scope.edit = !$scope.edit;
+      }
+
+      $scope.save = (note) => {
+        notesFactory.update(note.title, note.content, note._id);
+        $scope.toggleEdit();
+      }
 
     })
 }());

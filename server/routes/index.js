@@ -27,11 +27,11 @@ router.route('/users/:user_id/notes')
 
 
 router.route('/notes/:user_id?')
-  .post(notes.create);
+  .post(notes.create)
+  .put(notes.update);
 
 router.route('/notes/:note_id?')
   .get(notes.getNote)
-  .put(notes.update)
   .delete(notes.delete);
 
 

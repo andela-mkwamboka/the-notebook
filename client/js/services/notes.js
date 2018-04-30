@@ -9,7 +9,7 @@
       // }, {
       //   update: { method: 'PUT' },
       //   delete: { method: 'DELETE' },
-      // });
+      // }); 
 
       return {
         create: (title, content) => {
@@ -28,8 +28,17 @@
         getNote: (note) => {
           return resource.get({ note_id: note._id });
         },
-        update: (note) => {
-          resource.update({ note_id: note._id });
+        update: (title, content, note_id) => {
+          const userId = user_id
+          console.log('------------------------------------');
+          console.log(user_id);
+          console.log('------------------------------------');
+          const resource = $resource(`/api/notes/${user_id}/${token}`, null, { update: { method: 'PUT' } })
+          return resource.update({ title: title, content: content, note_id: note_id }).$promise
+            .then((result) => {
+              console.log(result)
+            });
+          resource.update({ title: title, content: content, note_id: note_id });
         },
         delete: (note_id) => {
           return resource.delete({ note_id: note._id });

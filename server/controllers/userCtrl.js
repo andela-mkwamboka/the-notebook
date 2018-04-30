@@ -41,9 +41,10 @@ module.exports = {
   },
 
   login: (request, response) => {
+    console.log(request.body)
     User.findOne({
       username: request.body.username
-    }).select('username password').exec((error, user) => {
+    }).select('username password _id').exec((error, user) => {
       if (user) {
         const validPassword = user.comparePassword(request.body.password);
         if (!validPassword) {
