@@ -41,7 +41,6 @@ module.exports = {
   },
 
   login: (request, response) => {
-    console.log(request.body)
     User.findOne({
       username: request.body.username
     }).select('username password _id').exec((error, user) => {

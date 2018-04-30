@@ -30,8 +30,8 @@ router.route('/notes/:user_id?')
   .post(notes.create)
   .put(notes.update);
 
-router.route('/notes/:note_id?')
-  .get(notes.getNote)
+router.route('/notes')
+  // .get(notes.getNote)
   .delete(notes.delete);
 
 

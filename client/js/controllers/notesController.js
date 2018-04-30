@@ -4,6 +4,7 @@
 
       // get all notes
       notesFactory.getNotes().$promise.then(function(notes) {
+        console.log(notes)
         if (notes) {
           // set relative time using moment js
           notes.message.forEach(note => {
@@ -27,10 +28,6 @@
         $scope.notePreview = true;
       };
 
-      $scope.addNote = () => {
-        $scope.createNote = true;
-      }
-
       $scope.readMore = (note) => {
         $scope.reading = true;
         $scope.read = {
@@ -40,6 +37,10 @@
         }
       }
 
+      $scope.cancel = () => {
+        $scope.reading = false;
+      }
+
       $scope.toggleEdit = () => {
         $scope.edit = !$scope.edit;
       }
@@ -47,6 +48,11 @@
       $scope.save = (note) => {
         notesFactory.update(note.title, note.content, note._id);
         $scope.toggleEdit();
+      }
+
+      $scope.delete = (noteId) => {
+        notesFactory.delete(noteId);
+        $location.path('/notes');
       }
 
     })

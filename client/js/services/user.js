@@ -21,8 +21,7 @@
           const resource = $resource('/api/users/login', null, { post: { method: 'POST' } });
           return resource.post({ username: username, password: password }).$promise
             .then((result) => {
-              console.log(result)
-                // store token
+              // store token
               $window.localStorage.setItem('token', result.token)
               $window.localStorage.setItem('user_id', result.user._id)
             });

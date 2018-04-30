@@ -1,9 +1,8 @@
 (function() {
   angular.module('noteApp')
-    .controller('userController', function($scope, $location, $window, userFactory, $reload) {
+    .controller('userController', function($scope, $location, $window, userFactory) {
       $scope.signup = () => {
         userFactory.signup($scope.username, $scope.email, $scope.password);
-        $route.reload();
         $location.path('/notes')
       };
       $scope.login = () => {

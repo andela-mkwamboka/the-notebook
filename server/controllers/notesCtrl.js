@@ -2,7 +2,6 @@ const Notes = require('../models/user.js');
 
 module.exports = {
   create: (request, response) => {
-    console.log(request.params.user_id);
     Notes
       .findById({
         _id: request.params.user_id
@@ -62,7 +61,7 @@ module.exports = {
   getAll: (request, response) => {
     Notes
       .findById({ _id: request.params.user_id })
-      .select('notes.title notes.content notes._id')
+      .select('notes.title notes.content notes._id notes.createdAt')
       .exec((error, notes) => {
         if (error) {
           return response.status(409).send({
@@ -81,14 +80,11 @@ module.exports = {
   },
 
   update: (request, response) => {
-    console.log(request.params.user_id)
-    console.log(request.body.note_id);
     Notes
       .findById({
         _id: request.params.user_id
       }).exec((err, usernotes) => {
         let notesArray = usernotes.notes.map((note) => {
-          console.log(usernotes)
           if (note._id == request.body.note_id) {
             if (request.body.title) note.title = request.body.title;
             if (request.body.content) note.content = request.body.content;
@@ -113,9 +109,9 @@ module.exports = {
 
   delete: (request, response) => {
     Notes
-      .findById({ user_id: request.params.user_id })
+      .findById({ _id: request.params.user_id })
       .exec((err, user) => {
-        user.notes.id(request.params.notes_id).remove();
+        user.notes.id(request.body.note_id).remove();
         user.save((error) => {
           if (error) {
             response.status(202).send({

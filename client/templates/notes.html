@@ -1,7 +1,7 @@
 <navigation></navigation>
 <div class="jumbotron">
   <!-- Display if user has no notes -->
-  <div ng-hide="createNote || notes ">
+  <div ng-hide="createNote || notes.length ">
     <h1 class="display-4">You don't have any notes!</h1>
     <button class="btn btn-primary" ng-click="toggleCreate()">Create Note</button>
   </div>
@@ -9,7 +9,7 @@
   <!-- Display Notes -->
   <div ng-hide="reading">
     <div class="container notes-display" ng-show="notes.length">
-      <button ng-click="addNote()"><i class="fas fa-plus"></i> Add Note</button>
+      <button ng-click="toggleCreate()"><i class="fas fa-plus"></i> Add Note</button>
     </div>
     <div class="note-card" ng-repeat="note in notes">
       <div class="card" style="width: 18rem;">
@@ -20,7 +20,7 @@
           <div class="btn btn-primary read" ng-click="readMore(note)">Read more
           </div>
           <div class="float-right date">
-            <small>created at {{ note.time }}</small>
+            <small>Created at {{ note.time }}</small>
           </div>
         </div>
       </div>
@@ -55,7 +55,8 @@
     <p class="lead" marked="read.content"> {{ read.content }}</p>
     <br> <br>
     <button class="btn btn-primary btn-lg" ng-click="toggleEdit()">Edit</button>
-    <button class="btn btn-primary btn-lg" ng-click="delete(note._id)">Delete</button>
+    <button class="btn btn-primary btn-lg" ng-click="delete(read.note._id)">Delete</button>
+    <button class="btn btn-primary btn-lg" ng-click="cancel()">Cancel</button>
   </div>
   <!-- Edit note -->
   <form ng-show="edit" name="editForm" class="form-group" novalidate>

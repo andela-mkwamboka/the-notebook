@@ -36,13 +36,9 @@
     })
     .run(function($rootScope, $window, $location, $http) {
       const user_id = $window.localStorage.getItem('user_id');
-      console.log(user_id)
-      console.log(!user_id || user_id == null)
       if (!user_id || user_id == null) {
         $location.path('/');
       }
-
     });
 
-  // });
 })();
