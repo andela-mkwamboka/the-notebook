@@ -1,5 +1,38 @@
 body {
-  margin-top: 20px
+  margin-top: 20px;
+  background: #222222;
+  color: #FFFFFF
+}
+
+.jumbotron {
+  background: none;
+  border: 2px solid;
+}
+
+nav {
+  background: none;
+  border: 1px solid #454646;
+}
+
+hr {
+  background: #454646;
+}
+
+button {
+  border-radius: 0px;
+  width: 12%;
+  padding: 5px;
+  margin-right: 5px;
+}
+
+.btn-primary {
+  border-radius: 0px;
+  margin-top: -4px;
+}
+
+small {
+  color: #5f5d5d;
+  font-size: 17px;
 }
 
 .navbar-header {
@@ -13,4 +46,16 @@ body {
 .nav-item {
   margin: 0px 10px;
   padding: 0px 10px;
+}
+
+.has-error {
+  border: 1px solid coral;
+}
+
+textarea,
+input {
+  width: 100%;
+  background: none;
+  color: white;
+  padding: 10px;
 }

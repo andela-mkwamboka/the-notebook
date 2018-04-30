@@ -16,16 +16,17 @@ module.exports = {
             content: request.body.content,
           });
           if (newNote) {
-            response.status(202).json({
+            response.status(202).send({
               message: newNote
             });
           }
         } else if (error) {
-          response.status(500).json({
+          response.status(500).send({
             error: error
           });
         }
       });
+
   },
   // get user specific notes
   getNote: (request, response) => {
@@ -34,15 +35,15 @@ module.exports = {
       .select('notes')
       .exec((error, note) => {
         if (!note) {
-          response.status(404).json({
+          response.status(404).send({
             message: 'User has no notes'
           });
         } else if (error) {
-          response.status(400).json({
+          response.status(400).send({
             message: error
           });
         }
-        response.status(200).json({
+        response.status(200).send({
           message: note
         });
       });
@@ -54,11 +55,11 @@ module.exports = {
       .select('notes.title notes.content')
       .exec((error, notes) => {
         if (error) {
-          return response.status(409).json({
+          return response.status(409).send({
             error: error
           });
         } else {
-          response.status(200).json({
+          response.status(200).send({
             notes: notes.notes
           });
         }
@@ -81,11 +82,11 @@ module.exports = {
         usernotes.notes = notesArray;
         usernotes.save((error, userNotes) => {
           if (error) {
-            response.status(404).json({
+            response.status(404).send({
               error: error
             });
           }
-          response.status(200).json({
+          response.status(200).send({
             notes: userNotes.notes
           });
         });
@@ -100,11 +101,11 @@ module.exports = {
         user.notes.id(request.params.notes_id).remove();
         user.save((error) => {
           if (error) {
-            response.status(202).json({
+            response.status(202).send({
               message: 404,
             });
           } else {
-            response.json({
+            response.send({
               message: 'Removed',
             });
           }

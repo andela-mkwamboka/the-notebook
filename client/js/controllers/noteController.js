@@ -1,6 +1,6 @@
 (function() {
   angular.module('noteApp')
-    .controller('mainController', function($scope) {
+    .controller('noteController', function($scope) {
       $scope.welcome = 'Welcome';
     });
 }());
