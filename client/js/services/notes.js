@@ -1,30 +1,38 @@
 (function() {
   angular.module('noteApp')
-    .factory('notesFactory', function($resource) {
-      const token = '?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibW9uaWNhaCIsImlhdCI6MTUyNTAxODA2NiwiZXhwIjoxNTI1MTA0NDY2fQ.xgmNr0CDHdiDy71eB0b9wIaFpiVzB-t7p0SZ8PFYuDc';
-      const resource = $resource(`/api/notes/:note_id/${token}`, {
-        note_id: '@_id'
-      }, {
-        update: { method: 'PUT' },
-        delete: { method: 'DELETE' },
-        save: { method: 'POST' }
-      });
+    .factory('notesFactory', function($resource, $window) {
+      const token = '?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibW9uaWNhaCIsImlhdCI6MTUyNTA2Mjk3OCwiZXhwIjoxNTI1MTQ5Mzc4fQ.G5-4hInnEpi6GP86tMojdudi_MLgHi1acMzdFWImyTc';
+      const user_id = $window.localStorage.getItem('user_id');
+      // console.log(user_id)
+      // const resource = $resource(`/api/notes/:note_id/${token}`, {
+      //   note_id: '@_id'
+      // }, {
+      //   update: { method: 'PUT' },
+      //   delete: { method: 'DELETE' },
+      // });
 
       return {
-        create: (note) => {
-          return resource.save(note);
+        create: (title, content) => {
+          const resource = $resource(`/api/notes/${user_id}/${token}`, null, { save: { method: 'POST' } })
+          return resource.save({ title: title, content: content }).$promise
+            .then((result) => {
+              console.log(result)
+            });
         },
         getNotes: () => {
-          return resource.get();
+          const getAll = $resource(`/api/users/:user_id/notes${token}`, {
+            user_id: '@user_id'
+          })
+          return getAll.get({ user_id: user_id });
         },
-        getNote: (noteId) => {
-          return resource.get({ note_id: noteId });
+        getNote: (note) => {
+          return resource.get({ note_id: note._id });
         },
-        update: (note, ) => {
-          resource.update(note);
+        update: (note) => {
+          resource.update({ note_id: note._id });
         },
-        delete: (noteId) => {
-          return resource.delete({ note_id: noteId });
+        delete: (note_id) => {
+          return resource.delete({ note_id: note._id });
         }
       }
     });

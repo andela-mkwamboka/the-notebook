@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = {
-  authenticate: (request, response) => {
+  authenticate: (request, response, next) => {
     // find token
     const token = request.body.token || request.query.token || request.headers['x-access-token'];
     if (token) {
@@ -15,6 +15,7 @@ module.exports = {
         } else {
           // Save token on request for  use in routes
           request.decoded = decoded;
+          next()
         }
       });
     } else {

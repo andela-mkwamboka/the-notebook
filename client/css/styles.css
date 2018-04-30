@@ -59,3 +59,8 @@ input {
   color: white;
   padding: 10px;
 }
+
+.card {
+  background: none;
+  border: 1px solid grey;
+}

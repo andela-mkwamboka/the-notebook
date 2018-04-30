@@ -32,7 +32,7 @@ module.exports = {
           user: {
             username: user.username,
             email: user.email,
-            _id: user._is
+            _id: user._id
           },
           token: token
         });

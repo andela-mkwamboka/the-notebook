@@ -9,17 +9,27 @@ module.exports = {
       })
       .select('notes')
       .exec((error, user) => {
+
         if (user) {
-          const newNote = user.notes.create({
+          user.notes.push({
             user_id: request.params.user_id,
             title: request.body.title,
             content: request.body.content,
           });
-          if (newNote) {
-            response.status(202).send({
-              message: newNote
-            });
-          }
+          const note = user.notes[0];
+
+          user.save((err, note) => {
+            if (error) {
+              response.status(404).send({
+                message: error
+              });
+            } else {
+              response.status(202).send({
+                message: note
+              });
+            }
+          });
+
         } else if (error) {
           response.status(500).send({
             error: error
@@ -58,9 +68,13 @@ module.exports = {
           return response.status(409).send({
             error: error
           });
-        } else {
+        } else if (notes) {
           response.status(200).send({
-            notes: notes.notes
+            message: notes.notes
+          });
+        } else {
+          response.status(404).send({
+            message: 'user has no notes'
           });
         }
       });

@@ -1,6 +1,6 @@
 (function() {
   angular.module('noteApp')
-    .factory('userFactory', function($location, $resource, $cookies) {
+    .factory('userFactory', function($location, $resource, $window) {
 
       return {
 
@@ -10,10 +10,9 @@
           return resource.post({ username: username, email: email, password: password })
             .$promise
             .then((result) => {
-              console.log(result)
-                // store token
-              $cookies.put('token', result.token);
-              $cookies.put('user_id', result.user._id);
+              // store token
+              $window.localStorage.setItem('token', result.token)
+              $window.localStorage.setItem('user_id', result.user._id)
 
             });
         },
@@ -24,14 +23,14 @@
             .then((result) => {
               console.log(result)
                 // store token
-              $cookies.put('token', result.token);
-              $cookies.put('user_id', result.user._id);
+              $window.localStorage.setItem('token', result.token)
+              $window.localStorage.setItem('user_id', result.user._id)
             });
         },
         // handle logout
         logout: () => {
           const resource = $resource('/api/users/logout', null, { post: { method: 'POST' } });
-          $cookies.remove('token');
+          $window.localStorage.removeItem('token')
           return resource.post()
         }
       };
