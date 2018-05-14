@@ -23,12 +23,13 @@ router.route('/users/:user_id')
 router.route('/users/:user_id/notes')
   .get(notes.getAll);
 
-router.route('/notes/:user_id?')
+router.route('/notes/:user_id?/:note_id?')
   .post(notes.create)
-  .put(notes.update);
-
-router.route('/notes')
-  // .get(notes.getNote)
+  .put(notes.update)
   .delete(notes.delete);
+
+// router.route('/notes/:user_id?')
+// .get(notes.getNote)
+
 
 module.exports = router;

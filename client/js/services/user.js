@@ -8,7 +8,8 @@
           return resource.post({ username: username, email: email, password: password })
             .$promise
             .then((response) => {
-              // store token
+              console.log(response)
+                // store token
               $localStorage.currentUser = { user: response.user, token: response.token };
               return response;
             });

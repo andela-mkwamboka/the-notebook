@@ -22,7 +22,7 @@ module.exports = {
               });
             } else {
               response.status(202).send({
-                message: note
+                notes: note
               });
             }
           });
@@ -109,7 +109,7 @@ module.exports = {
     Notes
       .findById({ _id: request.params.user_id })
       .exec((err, user) => {
-        user.notes.id(request.body.note_id).remove();
+        user.notes.id(request.params.note_id).remove();
         user.save((error) => {
           if (error) {
             response.status(202).send({

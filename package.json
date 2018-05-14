@@ -20,20 +20,30 @@
   "homepage": "https://github.com/andela-mkwamboka/the-notebook#readme",
   "dependencies": {
     "@uirouter/angularjs": "^1.0.15",
-    "angular-marked": "^1.2.2",
     "bcrypt-nodejs": "0.0.3",
-    "jsonwebtoken": "^8.2.1",
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
+    "jsonwebtoken": "^8.2.1",
     "mongoose": "^5.0.16"
   },
   "devDependencies": {
+    "angular": "^1.7.0",
+    "angular-local-storage": "^0.7.1",
+    "angular-marked": "^1.2.2",
+    "angular-mocks": "^1.7.0",
+    "angular-resource": "^1.7.0",
+    "angular-ui-router": "^1.0.18",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
+    "jasmine-core": "^2.99.1",
+    "karma": "^1.7.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.2",
+    "karma-spec-reporter": "0.0.32",
     "nodemon": "^1.17.3"
   }
 }

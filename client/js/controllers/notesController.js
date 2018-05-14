@@ -13,15 +13,17 @@
         }
       });
 
-      // create notes
-      $scope.create = (note) => {
-        $scope.toggleCreate();
-        $state.reload();
-        return notesFactory.create(note.title, note.content);
-      };
-
       $scope.toggleCreate = () => {
         $scope.createNote = !$scope.createNote;
+      };
+
+      $scope.create = (note) => {
+        notesFactory.create(note.title, note.content).then((results) => {
+          if (results) {
+            $scope.success = 'Note created';
+            $state.reload();
+          }
+        });
       };
 
       $scope.preview = () => {
@@ -41,6 +43,14 @@
         $scope.reading = false;
       };
 
+      $scope.delete = (noteId) => {
+        notesFactory.delete(noteId).then((result) => {
+          if (result) {
+            $state.reload();
+          }
+        });
+      };
+
       $scope.toggleEdit = () => {
         $scope.edit = !$scope.edit;
       };
@@ -48,15 +58,9 @@
       $scope.save = (note) => {
         notesFactory.update(note.title, note.content, note._id);
         $scope.toggleEdit();
+        $scope.cancel();
+        $state.reload();
       };
 
-      $scope.delete = (noteId) => {
-        notesFactory.delete(noteId);
-        $location.path('/notes');
-      };
-
-      $scope.addNote = () => {
-        $scope.createNote = true;
-      };
     });
 }());

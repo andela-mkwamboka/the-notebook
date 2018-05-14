@@ -8,7 +8,6 @@
         .state('home', {
           url: '/',
           templateUrl: '../../templates/home.html',
-          controller: 'mainController',
         })
         .state('notes', {
           url: '/notes',
@@ -35,7 +34,7 @@
     .run(($rootScope, $http, $location, $localStorage) => {
       // keep user logged in after page refresh
       if ($localStorage.currentUser) {
-        $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.currentUser.token;
+        $http.defaults.headers.common['x-access-token'] = $localStorage.currentUser.token;
       }
       // redirect to login page if not logged in and trying to access a restricted page
       $rootScope.$on('$locationChangeStart', () => {
