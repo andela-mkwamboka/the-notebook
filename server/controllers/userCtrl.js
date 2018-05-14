@@ -13,11 +13,11 @@ module.exports = {
     user.save((error, user) => {
       if (error) {
         if (error.code === 11000) {
-          response.status(400).json({
+          response.status(400).send({
             message: 'Duplicate Entry'
           });
         } else {
-          response.status(500).json({
+          response.status(500).send({
             error: error
           });
         }
@@ -27,12 +27,12 @@ module.exports = {
         }, process.env.SUPERSECRET, {
           expiresIn: 60 * 60 * 24, // 24 hours
         });
-        response.status(200).json({
+        response.status(200).send({
           message: 'User Created',
           user: {
             username: user.username,
             email: user.email,
-            _id: user._is
+            _id: user._id
           },
           token: token
         });
@@ -43,11 +43,11 @@ module.exports = {
   login: (request, response) => {
     User.findOne({
       username: request.body.username
-    }).select('username password').exec((error, user) => {
+    }).select('username password _id').exec((error, user) => {
       if (user) {
         const validPassword = user.comparePassword(request.body.password);
         if (!validPassword) {
-          response.status(404).json({ message: 'Authentication failed. Wrong password.' });
+          response.status(404).send({ message: 'Authentication failed. Wrong password.' });
         } else {
           // create token
           const token = jwt.sign({
@@ -55,14 +55,14 @@ module.exports = {
           }, process.env.SUPERSECRET, {
             expiresIn: 60 * 60 * 24, // 24 hours
           });
-          response.status(200).json({
+          response.status(200).send({
             message: 'Login successful',
             user: user,
             token: token
           });
         }
       } else {
-        response.status(401).json({
+        response.status(401).send({
           error: error
         });
       }
@@ -78,13 +78,13 @@ module.exports = {
       if (request.body.email) user.email = request.body.email;
       if (request.body.password) user.password = request.body.password;
       if (error) {
-        return response.status(400).json({
+        return response.status(400).send({
           error: error
         });
       } else {
         // save the new user details
         user.save((error, user) => {
-          response.status(200).json({
+          response.status(200).send({
             message: 'user details updated',
             user: user
           });
@@ -98,11 +98,11 @@ module.exports = {
       _id: request.params.user_id
     }, (error) => {
       if (error) {
-        return response.status(409).json({
+        return response.status(409).send({
           message: error
         });
       } else {
-        response.status(202).json({
+        response.status(202).send({
           message: 'Sad to see you leave'
         });
       }
@@ -112,7 +112,7 @@ module.exports = {
   logout: (request, response) => {
     if (request.decoded) {
       delete request.decoded;
-      response.json({
+      response.send({
         message: 'Bye',
       });
     }
