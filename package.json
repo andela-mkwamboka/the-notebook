@@ -19,10 +19,13 @@
   },
   "homepage": "https://github.com/andela-mkwamboka/the-notebook#readme",
   "dependencies": {
+    "@uirouter/angularjs": "^1.0.15",
+    "angular-marked": "^1.2.2",
     "bcrypt-nodejs": "0.0.3",
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
+    "jsonwebtoken": "^8.2.1",
     "mongoose": "^5.0.16"
   },
   "devDependencies": {

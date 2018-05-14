@@ -1,0 +1,70 @@
+<navigation></navigation>
+<div class="jumbotron">
+  <!-- Display if user has no notes -->
+  <div ng-hide="createNote || notes.length ">
+    <h1 class="display-4">You don't have any notes!</h1>
+    <button class="btn btn-primary" ng-click="toggleCreate()">Create Note</button>
+  </div>
+
+  <!-- Display Notes -->
+  <div ng-hide="reading">
+    <button ng-click="addNote()" ng-show="notes.length"><i class="fas fa-plus"></i> Add Note</button> <br> <br>
+    <div class="note-card" ng-repeat="note in notes">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <span class="card-title">{{ note.title | uppercase}}</span>
+          <hr>
+          <p class="card-text" marked="note.content">{{ note.content | limitTo:150 }}</p>
+          <div class="btn btn-primary read" ng-click="readMore(note)">Read more
+          </div>
+          <div class="float-right date">
+            <small>Created at {{ note.time }}</small>
+          </div>
+        </div>
+      </div> <br> <br>
+    </div>
+  </div>
+
+  <div ng-show="!notes.length || createNote" ng-hide="reading">
+    <!-- Create Notes Form -->
+    <form name="createForm" class="form-group" novalidate>
+      <div ng-show="notePreview">
+        <h3>{{ note.title | uppercase }}</h3>
+        <hr>
+        <p class="lead" marked="note.content"> {{ note.content}}</p>
+        <br> <br>
+      </div>
+      <div>
+        <label>Title <i class="warning">*</i></label>
+        <input ng-model="note.title" name="title" ng-change="preview()" required> <br><br>
+        <label>Content:<i class="warning">*</i></label> <small> #header, ****bold****, *italics* / _italics_, ~~strike~~  ,- list</small>
+        <textarea ng-model="note.content" name="content" ng-change="preview()" required></textarea> <br><br>
+        <button ng-disabled="createForm.$invalid" ng-class="{'btn-primary': !createForm.$invalid, 'btn-secondary': createForm.$invalid}" ng-click="create(note)">Create</button>
+        <button class="btn btn-primary" ng-click="toggleCreate()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+
+  <!-- View Note -->
+
+  <!-- Display note -->
+  <div ng-show="reading && !edit">
+    <h3>{{ read.title | uppercase }}</h3>
+    <hr>
+    <p class="lead" marked="read.content"> {{ read.content }}</p>
+    <br> <br>
+    <button class="btn btn-primary btn-lg" ng-click="toggleEdit()">Edit</button>
+    <button class="btn btn-primary btn-lg" ng-click="delete(read.note._id)">Delete</button>
+    <button class="btn btn-primary btn-lg" ng-click="cancel()">Cancel</button>
+  </div>
+  <!-- Edit note -->
+  <form ng-show="edit" name="editForm" class="form-group" novalidate>
+    <label>Title</label><i class="warning">*</i>
+    <input ng-model="read.title" name="title" required> <br><br>
+    <label>Content:</label><i class="warning">*</i> <small> #header, ****bold****, *italics* / _italics_, ~~strike~~  ,- list</small>
+    <textarea ng-model="read.content" name="content" required></textarea> <br><br>
+    <button class="btn btn-primary btn-lg" ng-click="toggleEdit()">Cancel</button>
+    <button class="btn btn-lg" ng-class="{'btn-primary': !editForm.$invalid, 'btn-secondary': editForm.$invalid}" ng-disabled="editForm.$invalid" ng-click="save(read)">Save</button>
+  </form>
+</div>
