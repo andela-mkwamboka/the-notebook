@@ -1,13 +1,17 @@
 const express = require('express'),
   app = express(),
   bodyParser = require('body-parser'),
-  mongoose = require('mongoose');
+  mongoose = require('mongoose'),
+  cors = require('cors');
 
 require('dotenv').config();
 
-// check enviroment
-const DB_URL = (app.settings.env === 'testing') ? process.env.DB_URL_TEST : process.env.DB_URL;
+// app configuration
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
+// check enviroment
+const DB_URL = (process.env.NODE_ENV === 'test') ? process.env.DB_URL_TEST : process.env.DB_URL;
 // database connection
 mongoose.connect(DB_URL, (error) => {
   if (error) {
@@ -18,6 +22,7 @@ mongoose.connect(DB_URL, (error) => {
 });
 
 // app configuration
+app.use(cors()); // prevent app from making other calls
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -31,3 +36,5 @@ app.get('/', (request, response) => {
 app.listen(process.env.PORT, () => {
   console.log('Application running on port ' + process.env.PORT);
 });
+
+module.exports = app;
