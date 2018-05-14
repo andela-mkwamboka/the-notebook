@@ -3,11 +3,9 @@ const router = require('express').Router(),
   notes = require('../controllers/notesCtrl'),
   auth = require('./auth');
 
-
 // USER ENDPOINTS
 router.route('/users')
   .post(users.create);
-
 
 router.route('/users/login')
   .post(users.login);
@@ -25,14 +23,12 @@ router.route('/users/:user_id')
 router.route('/users/:user_id/notes')
   .get(notes.getAll);
 
-
 router.route('/notes/:user_id?')
-  .post(notes.create);
+  .post(notes.create)
+  .put(notes.update);
 
-router.route('/notes/:note_id?')
-  .get(notes.getNote)
-  .put(notes.update)
+router.route('/notes')
+  // .get(notes.getNote)
   .delete(notes.delete);
-
 
 module.exports = router;

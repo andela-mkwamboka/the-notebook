@@ -24,10 +24,4 @@ module.exports = {
       });
     }
   },
-  // middleware that modify the response body
-  modifyBody: (request, response) => {
-    response.setHeader('Content-Type', 'text/html');
-    response.end();
-  }
-
 };
